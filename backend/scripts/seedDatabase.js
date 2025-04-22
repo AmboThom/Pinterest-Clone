@@ -5,7 +5,9 @@ const Pin = require('../models/Pin');
 const Board = require('../models/Board');
 const Comment = require('../models/Comment');
 
-const MONGODB_URI = 'mongodb://localhost:27017/pinterest-clone';
+//mongodb://localhost:27017/pinterest-clone
+//mongodb://127.0.0.1:27017/pinterest-clone
+const MONGODB_URI = 'mongodb://127.0.0.1:27017/pinterest-clone';
 
 const users = [
   {

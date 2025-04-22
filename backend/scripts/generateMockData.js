@@ -162,84 +162,84 @@ const generateMockData = async () => {
     // Create boards
     const boards = await Promise.all([
       Board.create({
-        name: 'Travel Photography',
+        title: 'Travel Photography',
         description: 'Capturing the world\'s most beautiful moments and places through my lens.',
         user: users[0]._id,
         isPrivate: false,
         pins: []
       }),
       Board.create({
-        name: 'Interior Design Inspiration',
+        title: 'Interior Design Inspiration',
         description: 'Collection of stunning interior design ideas and home decor inspiration.',
         user: users[1]._id,
         isPrivate: false,
         pins: []
       }),
       Board.create({
-        name: 'Tech Innovation',
+        title: 'Tech Innovation',
         description: 'Exploring the latest in technology, AI, and digital transformation.',
         user: users[2]._id,
         isPrivate: true,
         pins: []
       }),
       Board.create({
-        name: 'Culinary Adventures',
+        title: 'Culinary Adventures',
         description: 'Food photography and recipes from around the world.',
         user: users[3]._id,
         isPrivate: false,
         pins: []
       }),
       Board.create({
-        name: 'Travel Destinations',
+        title: 'Travel Destinations',
         description: 'Exploring hidden gems and popular destinations worldwide.',
         user: users[4]._id,
         isPrivate: false,
         pins: []
       }),
       Board.create({
-        name: 'Street Photography',
+        title: 'Street Photography',
         description: 'Capturing life in the city through candid moments.',
         user: users[0]._id,
         isPrivate: true,
         pins: []
       }),
       Board.create({
-        name: 'DIY Projects',
+        title: 'DIY Projects',
         description: 'Creative DIY ideas and home improvement projects.',
         user: users[1]._id,
         isPrivate: false,
         pins: []
       }),
       Board.create({
-        name: 'Future Tech',
+        title: 'Future Tech',
         description: 'Speculations and developments in future technology.',
         user: users[2]._id,
         isPrivate: false,
         pins: []
       }),
       Board.create({
-        name: 'Food Styling',
+        title: 'Food Styling',
         description: 'Art of food photography and styling techniques.',
         user: users[3]._id,
         isPrivate: true,
         pins: []
       }),
       Board.create({
-        name: 'Nature Photography',
+        title: 'Nature Photography',
         description: 'Stunning landscapes and wildlife photography.',
         user: users[4]._id,
         isPrivate: false,
         pins: []
       }),
       Board.create({
-        name: 'Portrait Photography',
+        title: 'Portrait Photography',
         description: 'Professional portrait photography techniques and inspiration.',
         user: users[0]._id,
         isPrivate: false,
         pins: []
       }),
       Board.create({
-        name: 'Minimalist Design',
+        title: 'Minimalist Design',
         description: 'Clean, minimalist design inspiration and ideas.',
         user: users[1]._id,
         isPrivate: true,

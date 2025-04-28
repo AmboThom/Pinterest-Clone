@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Text, Card, ActivityIndicator, FAB, Searchbar, IconButton, Menu } from 'react-native-paper';
 import { useAuth } from '../context/AuthContext';
 import { pinsAPI } from '../services/api';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 const numColumns = 2;
@@ -86,16 +87,15 @@ const HomeScreen = () => {
           value={searchQuery}
           style={styles.searchBar}
           iconColor="#E60023"
+          icon={() => <MaterialCommunityIcons name="magnify" size={24} color="#E60023" />}
         />
         <Menu
           visible={menuVisible}
           onDismiss={() => setMenuVisible(false)}
           anchor={
-            <IconButton
-              icon="account-circle"
-              size={24}
-              onPress={() => setMenuVisible(true)}
-              iconColor="#E60023"
+            <IconButton 
+            icon={() => <MaterialCommunityIcons name="account-circle" size={24} color="#E60023" />}
+            onPress={() => setMenuVisible(true)}  
             />
           }
         >
@@ -105,7 +105,7 @@ const HomeScreen = () => {
               navigation.navigate('Profile');
             }}
             title="Profile"
-            leadingIcon="account"
+            leadingIcon={() => <MaterialCommunityIcons name="account" size={24} color="#000" />}
           />
           <Menu.Item
             onPress={() => {
@@ -113,7 +113,7 @@ const HomeScreen = () => {
               navigation.navigate('Settings');
             }}
             title="Settings"
-            leadingIcon="cog"
+            leadingIcon={() => <MaterialCommunityIcons name="cog" size={24} color="#000" />}
           />
           <Menu.Item
             onPress={() => {
@@ -121,7 +121,7 @@ const HomeScreen = () => {
               logout();
             }}
             title="Logout"
-            leadingIcon="logout"
+            leadingIcon={() => <MaterialCommunityIcons name="logout" size={24} color="#000" />}
           />
         </Menu>
       </View>
@@ -135,11 +135,10 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
       />
       <FAB
-        icon="plus"
+        icon={() => <MaterialCommunityIcons name="plus" size={24} color="#fff" />}
         style={styles.fab}
         onPress={() => navigation.navigate('CreatePin')}
-        color="#fff"
-        backgroundColor="#E60023"
+        customSize={56}
       />
     </View>
   );
@@ -190,6 +189,7 @@ const styles = StyleSheet.create({
     margin: 16,
     right: 0,
     bottom: 0,
+    backgroundColor: '#E60023',
   },
 });
 

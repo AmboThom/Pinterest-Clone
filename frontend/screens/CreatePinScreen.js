@@ -134,6 +134,23 @@ const CreatePinScreen = () => {
     setError('');
 
     try {
+      const response = await fetch('http://localhost:5001/api/pins', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          imageUrl,
+          boardId
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create pin.');
+      }
       // Create new pin with dummy data
       const currentUser = getCurrentUser();
       const selectedBoard = dummyBoards.find(board => board._id === formData.boardId);
@@ -163,11 +180,7 @@ const CreatePinScreen = () => {
       selectedBoard.pins.push(newPin);
       
       // Navigate back to the previous screen with a refresh parameter
-      navigation.navigate('Home', { refresh: true });
-      navigation.navigate('Profile', { refresh: true });
-
-      // Close the modal
-      setModalVisible(false);
+      handleCloseModal(true);
     } catch (error) {
       console.error('Error creating pin:', error);
       setError(error.message || 'Failed to create pin. Please try again.');
@@ -176,18 +189,44 @@ const CreatePinScreen = () => {
     }
   };
 
+  const handleCloseModal = async (shouldRefresh = false) => {
+    console.log("Closing modal. Should Refresh:", shouldRefresh);
+    setModalVisible(false);
+
+    await new Promise(resolve => {
+      setTimeout(() => {
+        console.log("Modal closed. Now refreshing background page");
+        resolve();
+      }, 200);
+    });
+
+    const naviState = navigation.getState();
+    const currentNavState = naviState.index;
+    const prevRoute = currentNavState > 0 ? naviState.routes[currentNavState - 1] : null;
+
+
+    if (shouldRefresh && prevRoute) {
+      navigation.navigate(prevRoute.name, {
+        ...prevRoute.params,
+        refresh: Date.now()
+      });
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
     <Modal
       animationType="slide"
       transparent={true}
       visible={modalVisible}
-      onRequestClose={() => setModalVisible(false)}
+      onRequestClose={() => handleCloseModal(false)}
     >
       <View style={styles.modalContainer}>
         <TouchableOpacity 
           style={styles.overlay} 
           activeOpacity={1} 
-          onPress={() => setModalVisible(false)}
+          onPress={() => handleCloseModal(false)}
         >
           <TouchableOpacity 
             style={styles.modalContent}
@@ -201,7 +240,7 @@ const CreatePinScreen = () => {
               <IconButton
                 icon={() => <MaterialCommunityIcons name="close" size={24} color="#FFFFFF" />}
                 size={24}
-                onPress={() => setModalVisible(false)}
+                onPress={() => handleCloseModal(false)}
                 style={styles.closeButton}
               />
             </View>

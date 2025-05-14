@@ -7,6 +7,7 @@ const config = require('./config');
 const authRoutes = require('./routes/auth');
 const pinsRoutes = require('./routes/pins');
 const boardsRoutes = require('./routes/boards');
+const { authenticate } = require('./routes/auth');
 
 const app = express();
 

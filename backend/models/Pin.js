@@ -24,6 +24,11 @@ const pinSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  boardId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Board',
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('Pin', pinSchema); 

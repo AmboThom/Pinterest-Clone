@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Pin = require('../models/Pin');
+const { authenticate } = require('./auth');
 
 // Get all pins
 router.get('/', async (req, res) => {
@@ -28,20 +29,38 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create pin
-router.post('/', async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
   try {
-    const { title, description, imageUrl, userId } = req.body;
+
+    console.log('Request body:', req.body);
+    console.log('User ID from token:', req.userId);
+    const { title, description, imageUrl, boardId } = req.body;
+
+    console.log('Creating pin with data:', {
+      body: req.body,
+      userId: req.userId,
+      boardId: req.body.boardId
+    });
+
+    if (!title || !description || !imageUrl || !boardId) {
+      console.log('Missed fields: ', !title || !description || !imageUrl || !boardId)
+      return res.status(400).json({message: 'Missing required fields' });
+    }
     const pin = new Pin({
       title,
       description,
       imageUrl,
-      user: userId,
+      user: req.userId,
+      boardId
     });
+
+    console.log('Attemping to save pin: ', pin);
+    
     await pin.save();
     res.status(201).json(pin);
   } catch (error) {
     console.error('Create pin error:', error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error for creating pin' });
   }
 });
 

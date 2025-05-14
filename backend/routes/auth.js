@@ -5,6 +5,34 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const config = require('../config');
 
+// Authentication middleware
+const authenticate = async (req, res, next) => {
+  try {
+    const token = req.header('Authorization')?.replace('Bearer ', '') || req.header('x-auth-token');
+    if (!token) {
+      return res.status(401).json({ message: 'No token, authorization denied' });
+    }
+
+    const decoded = jwt.verify(token, config.JWT_SECRET);
+    console.log('Decoded token: ', decoded);
+    const user = await User.findById(decoded.userId).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    req.userId = user._id;
+    req.user = user;
+    next();
+  } catch (error) {
+    console.error('Authentication error details', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+    res.status(401).json({ message: 'Token is not valid' });
+  }
+}
+
 // Register
 router.post('/register', async (req, res) => {
   try {
@@ -93,24 +121,9 @@ router.post('/login', async (req, res) => {
 });
 
 // Get current user
-router.get('/me', async (req, res) => {
-  try {
-    const token = req.header('Authorization')?.replace('Bearer ', '') || req.header('x-auth-token');
-    if (!token) {
-      return res.status(401).json({ message: 'No token, authorization denied' });
-    }
-
-    const decoded = jwt.verify(token, config.JWT_SECRET);
-    const user = await User.findById(decoded.userId).select('-password');
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    res.json(user);
-  } catch (error) {
-    console.error('Get current user error:', error);
-    res.status(401).json({ message: 'Token is not valid' });
-  }
+router.get('/me', authenticate, async (req, res) => {
+  res.json(req.user);
 });
 
-module.exports = router; 
+module.exports = router;
+module.exports.authenticate = authenticate;
